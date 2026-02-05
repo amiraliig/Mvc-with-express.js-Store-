@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const { randomUUID } = require('crypto')
+
 const getProductsFromFile = (cb) => {
     const p = path.join(
         path.dirname(process.mainModule.filename),
@@ -67,20 +68,26 @@ module.exports = class Products {
             };
             fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
                 console.log(err)
+                cb?.(null)
             })
 
+
         })
-        cb()
+
     }
     static deleteProduct(productId, cb) {
         getProductsFromFile((products) => {
+
             const updatedProducts = products.filter(product => {
                 return product.id != productId
             })
             fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
                 if (err) console.log(err)
+               
                 cb()
+
             })
         })
+
     }
 }

@@ -82,9 +82,24 @@ exports.postCart = (req, res, next) => {
             return res.redirect(303, '/');
 
         }, 20);
-        
+
     })
 
+
 };
+exports.getCart = (req, res, next) => {
+    Cart.getCart((cart) => {
+        res.render('shop/cart', {
+            pageTitle: "Your Cart",
+            path: '/cart',
+            cartProducts: cart
+        })
+    })
+}
 
-
+exports.cartDeleteItem = (req, res, next) => {
+    const productId = req.body.productId
+    Cart.ProductDeleteItem(productId, () => {
+        res.redirect('/cart')
+    })
+}

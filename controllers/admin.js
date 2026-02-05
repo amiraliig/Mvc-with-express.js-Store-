@@ -1,6 +1,7 @@
 const path = require('path')
 const Product = require('../models/product')
 const fs = require('fs')
+const Cart = require("../models/cart");
 exports.getAddProducts = (req, res, next) => {
     res.render('admin/add-product', {
         pageTitle: 'Add Product',
@@ -55,6 +56,7 @@ exports.deleteProduct = (req, res, next) => {
     const productId = req.params.productId
     console.log(productId)
     Product.deleteProduct(productId, () => {
+        Cart.deleteProduct(productId);
         res.redirect('/')
     })
 }

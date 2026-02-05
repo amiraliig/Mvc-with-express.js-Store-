@@ -11,5 +11,6 @@ router.get("/checkout", shopConroller.getChechout);
 router.get("/orders", shopConroller.getOrders)
 router.get("/products/:id", shopConroller.getProductDetails)
 router.post('/cart', shopConroller.postCart)
-
+router.get('/cart',shopConroller.getCart)
+router.post('/cart-delete-item/',shopConroller.cartDeleteItem)
 module.exports = router;
