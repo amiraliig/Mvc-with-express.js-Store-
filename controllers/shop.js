@@ -1,23 +1,29 @@
 const Product = require('../models/product')
 const Cart = require('../models/cart')
+const { where } = require('sequelize')
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll().then(([rows, field]) => {
+
+    Product.findAll().then(products => {
         res.render('shop/product-list', {
-            prods: rows,
+            prods: products,
             pageTitle: "All Products",
             path: '/products'
         })
+    }).catch(err => {
+        console.log(err)
     })
 }
 
 exports.getIndex = (req, res, next) => {
 
-    Product.fetchAll().then(([rows, field]) => {
-        res.render('shop/product-list', {
-            prods: rows,
+    Product.findAll().then(products => {
+        res.render('shop/index', {
+            prods: products,
             pageTitle: "All Products",
-            path: '/products'
+            path: '/'
         })
+    }).catch(err => {
+        console.log(err)
     })
 }
 
@@ -42,36 +48,22 @@ exports.getChechout = (req, res, next) => {
 }
 exports.getProductDetails = (req, res, next) => {
     const prodId = req.params.id;
+    console.log(prodId)
 
-    // Product.fetchAll((products) => {
-    //     const product = products.find((p) => String(p.id) === String(prodId));
 
-    //     if (!product) {
-    //         return res.status(404).render('404', {
-    //             pageTitle: 'Product not found'
-    //         });
-    //     }
-
-    //     res.render('shop/product-detail', {
-    //         pageTitle: product.title,
-    //         product: product,
-    //         path: '/products'
-    //     });
-    // });
-    Product.fetchProductById(prodId, (product) => {
-        if (!product) {
-            return res.status(404).render('404', {
-                pageTitle: 'Product not found'
-            });
-        }
-
+    Product.fetchProductById(prodId).then(([product]) => {
+        console.log(product)
         res.render('shop/product-detail', {
-            pageTitle: product.title,
-            product: product,
+            pageTitle: product[0].title,
+            product: product[0],
             path: '/products'
         });
+    }).catch(err => {
+        return res.status(404).render('404', {
+            pageTitle: 'Product not found',
+            path: "/"
+        });
     })
-
 
 };
 
