@@ -3,7 +3,7 @@ const Cart = require('../models/cart')
 const { where } = require('sequelize')
 exports.getProducts = (req, res, next) => {
 
-    Product.findAll().then(products => {
+    req.user.getProducts().then(products => {
         res.render('shop/product-list', {
             prods: products,
             pageTitle: "All Products",
@@ -16,7 +16,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
 
-    Product.findAll().then(products => {
+    req.user.getProducts().then(products => {
         res.render('shop/index', {
             prods: products,
             pageTitle: "All Products",
@@ -51,11 +51,11 @@ exports.getProductDetails = (req, res, next) => {
     console.log(prodId)
 
 
-    Product.fetchProductById(prodId).then(([product]) => {
+    req.user.getProducts({ where: { id: prodId }}).then((product) => {
         console.log(product)
         res.render('shop/product-detail', {
-            pageTitle: product[0].title,
-            product: product[0],
+            pageTitle: product.title,
+            product: product,
             path: '/products'
         });
     }).catch(err => {
