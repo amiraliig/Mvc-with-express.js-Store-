@@ -15,28 +15,28 @@
             
             <header class="card__header">
               <h1 class="product__title">
-                <%= item.productData.title %>
+                <%= item.title %>
               </h1>
             </header>
 
             <div class="card__image">
               <img 
-                src="<%= item.productData.imageUrl %>" 
-                alt="<%= item.productData.title %>">
+                src="<%= item.imageUrl %>" 
+                alt="<%= item.title %>">
             </div>
 
             <div class="card__content">
               <h2 class="product__price">
-                $<%= item.productData.price %>
+                $<%= item.price %>
               </h2>
 
               <p>
-                Quantity: <strong><%= item.qty %></strong>
+                Quantity: <strong><%= item.cartItem.quantity %></strong>
               </p>
 
               <p>
                 Total: $
-                <%= item.qty * item.productData.price %>
+                <%= item.cartItem.quantity * item.price %>
               </p>
             </div>
 
@@ -45,7 +45,7 @@
                 <input 
                   type="hidden" 
                   name="productId" 
-                  value="<%= item.productData.id %>">
+                  value="<%= item.id %>">
                 <button class="btn">Remove</button>
               </form>
             </div>
@@ -59,7 +59,7 @@
           <h2>
             Grand Total: $
             <%= cartProducts.reduce((sum, p) => {
-              return sum + (p.qty * p.productData.price)
+              return sum + (p.cartItem.quantity * p.price)
             }, 0) %>
           </h2>
         </div>

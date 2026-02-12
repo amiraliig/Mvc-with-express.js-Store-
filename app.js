@@ -48,19 +48,25 @@ User.hasOne(Cart)
 Cart.belongsTo(User)
 Cart.belongsToMany(Product, { through: CartItem })
 Product.belongsToMany(Cart, { through: CartItem })
-sequelize.sync({force:true}).then(() => {
+sequelize.sync().then(() => {
     return User.findByPk(1)
 }).then((user) => {
     if (!user) {
-        User.create({ name: "amirali", email: "amirali@example.com" })
+        return User.create({ name: "amirali", email: "amirali@example.com" })
     }
     return user
-}).then(retsult => {
-    console.log(retsult)
-    app.listen(3000, () => {
-        console.log("express runed on localhost:3000")
+}).then(user => {
+    user.getCart().then(cart => {
+        if (cart) return user
+        return user.createCart().then(() => user )
     })
-}).catch(err => {
-    console.log(err)
-}
-)
+})
+    .then(retsult => {
+        console.log(retsult)
+        app.listen(3000, () => {
+            console.log("express runed on localhost:3000")
+        })
+    }).catch(err => {
+        console.log(err)
+    }
+    )
