@@ -48,11 +48,11 @@ exports.getChechout = (req, res, next) => {
 }
 exports.getProductDetails = (req, res, next) => {
     const prodId = req.params.id;
-    console.log(prodId)
+    
 
 
     req.user.getProducts({ where: { id: prodId } }).then((product) => {
-        console.log(product)
+       
         res.render('shop/product-detail', {
             pageTitle: product.title,
             product: product,
@@ -127,7 +127,7 @@ exports.cartDeleteItem = (req, res, next) => {
     req.user.getCart().then(cart => {
         return cart.getProducts({ where: { id: productId } }).then(products => {
             if (products.length == 0) {
-              return res.redirect('/')
+                return res.redirect('/')
             }
             const product = products[0];
             const currentQty = product.cartItem.quantity
@@ -143,3 +143,43 @@ exports.cartDeleteItem = (req, res, next) => {
         console.log(err)
     })
 }
+exports.createOrder = (req, res, next) => {
+
+    req.user.getCart().then(cart => {
+        return cart.getProducts().then(products => {
+
+            return req.user.createOrder().then(order => {
+                const productForOrder = products.map(product => {
+                    product.orderItem = {
+                        quantity: product.cartItem.quantity
+                    }
+                    return product
+                })
+                return order.addProducts(productForOrder).then(() => cart)
+
+            }).then((cart) => {
+                return cart.setProducts([])
+            }).then(() => {
+                res.redirect("/")
+            })
+        })
+    })
+}
+exports.getOrders = (req, res, next) => {
+  req.user.getOrders()
+    .then(orders => {
+      return Promise.all(
+        orders.map(order => {
+          return order.getProducts().then(products => ({ order, products }));
+        })
+      );
+    })
+    .then(ordersWithProducts => {
+      res.render('shop/orders', {
+        pageTitle: 'Your Orders',
+        path: '/orders',
+        orders: ordersWithProducts
+      });
+    })
+    .catch(err => console.log(err));
+};

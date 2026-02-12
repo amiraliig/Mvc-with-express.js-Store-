@@ -1,77 +1,75 @@
 <%- include('../includes/head.ejs') %>
-<link rel="stylesheet" href="/css/product.css">
-</head>
+  <link rel="stylesheet" href="/css/product.css">
+  </head>
 
-<body>
-  <%- include('../includes/navigation.ejs') %>
+  <body>
+    <%- include('../includes/navigation.ejs') %>
 
-  <main>
-    <h1>Your Cart</h1>
+      <main>
+        <h1>Your Cart</h1>
 
-    <% if (cartProducts.length > 0) { %>
-      <div class="grid">
-        <% for (let item of cartProducts) { %>
-          <article class="card product-item">
-            
-            <header class="card__header">
-              <h1 class="product__title">
-                <%= item.title %>
-              </h1>
-            </header>
+        <% if (cartProducts.length> 0) { %>
+          <div class="grid">
+            <% for (let item of cartProducts) { %>
+              <article class="card product-item">
 
-            <div class="card__image">
-              <img 
-                src="<%= item.imageUrl %>" 
-                alt="<%= item.title %>">
-            </div>
+                <header class="card__header">
+                  <h1 class="product__title">
+                    <%= item.title %>
+                  </h1>
+                </header>
 
+                <div class="card__image">
+                  <img src="<%= item.imageUrl %>" alt="<%= item.title %>">
+                </div>
+
+                <div class="card__content">
+                  <h2 class="product__price">
+                    $<%= item.price %>
+                  </h2>
+
+                  <p>
+                    Quantity: <strong>
+                      <%= item.cartItem.quantity %>
+                    </strong>
+                  </p>
+
+                  <p>
+                    Total: $
+                    <%= item.cartItem.quantity * item.price %>
+                  </p>
+                </div>
+
+                <div class="card__actions">
+                  <form action="/cart-delete-item" method="POST">
+                    <input type="hidden" name="productId" value="<%= item.id %>">
+                    <button class="btn">Remove</button>
+                  </form>
+                </div>
+
+              </article>
+              <% } %>
+          </div>
+
+          <section class="card">
             <div class="card__content">
-              <h2 class="product__price">
-                $<%= item.price %>
+              <h2>
+                Grand Total: $
+                <%= cartProducts.reduce((sum, p)=> {
+                  return sum + (p.cartItem.quantity * p.price)
+                  }, 0) %>
               </h2>
-
-              <p>
-                Quantity: <strong><%= item.cartItem.quantity %></strong>
-              </p>
-
-              <p>
-                Total: $
-                <%= item.cartItem.quantity * item.price %>
-              </p>
             </div>
 
             <div class="card__actions">
-              <form action="/cart-delete-item" method="POST">
-                <input 
-                  type="hidden" 
-                  name="productId" 
-                  value="<%= item.id %>">
-                <button class="btn">Remove</button>
-              </form>
+              <button class="btn">Order Now</button>
+              <%- include('../includes/checkoutBtn.ejs') %>
             </div>
+          </section>
 
-          </article>
-        <% } %>
-      </div>
+          <% } else { %>
+            <h2>Your cart is empty!</h2>
+            <% } %>
+      </main>
 
-      <section class="card">
-        <div class="card__content">
-          <h2>
-            Grand Total: $
-            <%= cartProducts.reduce((sum, p) => {
-              return sum + (p.cartItem.quantity * p.price)
-            }, 0) %>
-          </h2>
-        </div>
-
-        <div class="card__actions">
-          <button class="btn">Order Now</button>
-        </div>
-      </section>
-
-    <% } else { %>
-      <h2>Your cart is empty!</h2>
-    <% } %>
-  </main>
-
-<%- include('../includes/end.ejs') %>
+      <%- include('../includes/end.ejs') %>

@@ -6,6 +6,8 @@ const Product = require('./models/product')
 const User = require('./models/user')
 const Cart = require('./models/cart')
 const CartItem = require('./models/cart-item')
+const Order = require('./models/order')
+const OrderItem = require('./models/order-item')
 const app = express()
 
 
@@ -42,12 +44,22 @@ app.use(shopRoutes)
 
 
 app.use(errorController.get404);
+
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' })
 User.hasMany(Product);
+
 User.hasOne(Cart)
 Cart.belongsTo(User)
+
 Cart.belongsToMany(Product, { through: CartItem })
 Product.belongsToMany(Cart, { through: CartItem })
+
+User.hasMany(Order)
+Order.belongsTo(User, { allowNull: false });
+
+Product.belongsToMany(Order, { through: OrderItem })
+Order.belongsToMany(Product, { through: OrderItem })
+
 sequelize.sync().then(() => {
     return User.findByPk(1)
 }).then((user) => {
@@ -58,11 +70,11 @@ sequelize.sync().then(() => {
 }).then(user => {
     user.getCart().then(cart => {
         if (cart) return user
-        return user.createCart().then(() => user )
+        return user.createCart().then(() => user)
     })
 })
     .then(retsult => {
-        console.log(retsult)
+       
         app.listen(3000, () => {
             console.log("express runed on localhost:3000")
         })
