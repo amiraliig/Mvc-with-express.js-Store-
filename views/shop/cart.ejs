@@ -3,7 +3,7 @@
   </head>
 
   <body>
-    <%- include('../includes/navigation.ejs') %>
+    <%- include('../includes/navigation.ejs') %>  
 
       <main>
         <h1>Your Cart</h1>
@@ -30,19 +30,19 @@
 
                   <p>
                     Quantity: <strong>
-                      <%= item.cartItem.quantity %>
+                      <%= item.quantity %>
                     </strong>
                   </p>
 
                   <p>
                     Total: $
-                    <%= item.cartItem.quantity * item.price %>
+                    <%= item.quantity * item.price %>
                   </p>
                 </div>
 
                 <div class="card__actions">
                   <form action="/cart-delete-item" method="POST">
-                    <input type="hidden" name="productId" value="<%= item.id %>">
+                    <input type="hidden" name="productId" value="<%= item._id %>">
                     <button class="btn">Remove</button>
                   </form>
                 </div>
@@ -56,7 +56,7 @@
               <h2>
                 Grand Total: $
                 <%= cartProducts.reduce((sum, p)=> {
-                  return sum + (p.cartItem.quantity * p.price)
+                  return sum + (p.quantity * p.price)
                   }, 0) %>
               </h2>
             </div>
