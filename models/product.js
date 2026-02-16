@@ -1,28 +1,58 @@
-const Sequelize = require("sequelize");
+const getDb = require('../utils/database').getDb
+const { ObjectId } = require("mongodb");
 
-const sequelize = require("../utils/database")
+class Product {
 
-const Product = sequelize.define('product', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true,
-
-    },
-    title: Sequelize.STRING,
-    price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-
-    },
-    imageUrl:{
-        type:Sequelize.TEXT,
-        allowNull:false
-    },
-    description:{
-        type:Sequelize.TEXT,
-        allowNull:false
+    constructor(title, price, description, imageUrl) {
+        this.title = title,
+            this.price = price,
+            this.description = description,
+            this.imageUrl = imageUrl
     }
-})
+    save() {
+        const db = getDb();
+        return db.collection('products')
+            .insertOne(this)
+            .then(result => {
+                console.log(result)
+                return result
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+    static fetchAll() {
+        const db = getDb();
+        return db.collection('products')
+            .find()
+            .toArray()
+    }
+    static getProductDetails(productId) {
+        const db = getDb();
+        return db.collection('products')
+            .find({ _id: new ObjectId(productId) })
+            .toArray()
+    }
+    static deleteProduct(productId) {
+        const db = getDb();
+        return db.collection('products')
+            .deleteOne({ _id: new ObjectId(productId) })
+    }
+    static updateById(productId, product) {
+        const db = getDb();
+        console.log(product)
+        return db.collection('products')
+            .updateOne({ _id: new ObjectId(productId) },
+                {
+                    $set: {
+                        title: product.updatedTitle,
+                        price: product.updatedPrice,
+                        description: product.updatedDescription,
+                        imageUrl: product.updatedImageUrl
+                    }
+                })
+    }
+}
+
 module.exports = Product;

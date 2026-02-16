@@ -2,8 +2,7 @@ const Product = require('../models/product')
 const Cart = require('../models/cart')
 const { where } = require('sequelize')
 exports.getProducts = (req, res, next) => {
-
-    req.user.getProducts().then(products => {
+    Product.fetchAll().then(products => {
         res.render('shop/product-list', {
             prods: products,
             pageTitle: "All Products",
@@ -12,11 +11,12 @@ exports.getProducts = (req, res, next) => {
     }).catch(err => {
         console.log(err)
     })
+
 }
 
 exports.getIndex = (req, res, next) => {
 
-    req.user.getProducts().then(products => {
+    Product.fetchAll().then(products => {
         res.render('shop/index', {
             prods: products,
             pageTitle: "All Products",
@@ -48,11 +48,9 @@ exports.getChechout = (req, res, next) => {
 }
 exports.getProductDetails = (req, res, next) => {
     const prodId = req.params.id;
-    
-
-
-    req.user.getProducts({ where: { id: prodId } }).then((product) => {
-       
+    Product.getProductDetails(prodId).then((product) => {
+        console.log(product)
+        product = product[0]
         res.render('shop/product-detail', {
             pageTitle: product.title,
             product: product,
@@ -166,20 +164,20 @@ exports.createOrder = (req, res, next) => {
     })
 }
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders()
-    .then(orders => {
-      return Promise.all(
-        orders.map(order => {
-          return order.getProducts().then(products => ({ order, products }));
+    req.user.getOrders()
+        .then(orders => {
+            return Promise.all(
+                orders.map(order => {
+                    return order.getProducts().then(products => ({ order, products }));
+                })
+            );
         })
-      );
-    })
-    .then(ordersWithProducts => {
-      res.render('shop/orders', {
-        pageTitle: 'Your Orders',
-        path: '/orders',
-        orders: ordersWithProducts
-      });
-    })
-    .catch(err => console.log(err));
+        .then(ordersWithProducts => {
+            res.render('shop/orders', {
+                pageTitle: 'Your Orders',
+                path: '/orders',
+                orders: ordersWithProducts
+            });
+        })
+        .catch(err => console.log(err));
 };
