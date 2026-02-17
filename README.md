@@ -1,60 +1,60 @@
 # Node.js MVC Shop (MongoDB + Mongoose)
 
-یک پروژه فروشگاه ساده با معماری MVC با استفاده از Node.js، Express، Mongoose و EJS.
+A simple shop project using the MVC architecture with Node.js, Express, Mongoose, and EJS.
 
 ---
 
-## ویژگی‌ها
-- معماری MVC (مدل، ویو، کنترلر)
-- مدیریت محصولات (افزودن، ویرایش، حذف، مشاهده)
-- نمایش جزئیات هر محصول
-- سبد خرید (در صورت پیاده‌سازی)
-- رندر صفحات با EJS و partialها
-- استفاده از MongoDB و Mongoose برای مدیریت داده‌ها
-- مدیریت session با express-session
+## Features
+- MVC architecture (Model, View, Controller)
+- Product management (add, edit, delete, view)
+- Product detail page
+- Shopping cart (if implemented)
+- Page rendering with EJS and partials
+- Uses MongoDB and Mongoose for data management
+- Session management with express-session
 
 ---
 
-## پیش‌نیازها
-- Node.js (نسخه ۱۴ یا بالاتر)
-- MongoDB (در حال اجرا روی localhost یا هر سرور دلخواه)
+## Prerequisites
+- Node.js (version 14 or higher)
+- MongoDB (running on localhost or any server)
 - npm
 
 ---
 
-## نصب و راه‌اندازی
+## Installation & Setup
 
-1. مخزن را کلون کنید:
+1. Clone the repository:
     ```bash
     git clone <repo-url>
     cd mvc
     ```
-2. پکیج‌ها را نصب کنید:
+2. Install dependencies:
     ```bash
     npm install
     ```
-3. MongoDB را اجرا کنید (پیش‌فرض روی پورت 27017):
+3. Start MongoDB (default port 27017):
     ```bash
     mongod
     ```
-4. اطلاعات اتصال به دیتابیس در app.js به صورت زیر است:
+4. Database connection info in app.js is as follows:
     ```js
     mongoose.connect('mongodb://localhost:27017/shop')
     ```
-    در صورت نیاز، اطلاعات اتصال را تغییر دهید.
-5. سرور را اجرا کنید:
+    Change the connection string if needed.
+5. Start the server:
     ```bash
     npm start
     ```
-    یا
+    or
     ```bash
     node app.js
     ```
-6. پروژه روی [http://localhost:3000](http://localhost:3000) در دسترس است.
+6. The project will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## ساختار پوشه‌ها
+## Folder Structure
 
 ```
 mvc/
@@ -82,16 +82,16 @@ mvc/
 
 ---
 
-## نکات مهم
-- مدل Product و سایر مدل‌ها با Mongoose تعریف شده‌اند.
-- اگر قصد استفاده از Sharding یا Replica Set دارید، فقط کافیست connection string را به آدرس mongos تغییر دهید.
-- برای توسعه بیشتر (مثل احراز هویت، مدیریت سفارشات و ...) می‌توانید کنترلرها و مدل‌های جدید اضافه کنید.
+## Notes
+- The Product model and other models are defined using Mongoose.
+- If you want to use Sharding or Replica Set, just change the connection string to point to mongos.
+- For further development (such as authentication, order management, etc.), you can add new controllers and models.
 
 ---
 
-## مشارکت
-پیشنهادات و Pull Requestها خوش‌آمدند!
+## Contribution
+Suggestions and Pull Requests are welcome!
 
-## لایسنس
+## License
 MIT
 
