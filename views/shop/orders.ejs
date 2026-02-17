@@ -4,8 +4,13 @@
 <body>
   <%- include('../includes/navigation.ejs') %>
 
-  <main>
-    <h1>Your Orders</h1>
+  <main class="page">
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">Your Orders</h2>
+        <p class="section__lead">Every order, laid out clean and clear.</p>
+      </div>
+    </section>
 
     <% if (!orders || orders.length === 0) { %>
       <h2>No orders yet.</h2>
@@ -26,15 +31,14 @@
                     <strong><%= p.title %></strong>
                     — Qty: <%= p.quantity %>
                     — Price: $<%= p.price %>
-                    — Line total: $<%= p.quantity * p.price %>
+                    — Line total: $<%= p.lineTotal %>
                   </li>
                 <% }) %>
               </ul>
 
               <p>
                 <strong>
-                  Order total: $
-                  <%= o.items.reduce((sum, p) => sum + (p.quantity * p.price), 0) %>
+                  Order total: $<%= o.totalPrice %>
                 </strong>
               </p>
             <% } %>

@@ -10,11 +10,43 @@
 }
 
 .form-control input {
-    border: 1px solid #a1a1a1;
+    border: 1px solid var(--border);
     font: inherit;
-    border-radius: 2px;
+    border-radius: 12px;
+    background: rgba(12, 15, 23, 0.9);
+    color: var(--text);
+    padding: 0.7rem 0.85rem;
 }
 
 .form-control input:focus {
-    outline-color: #00695c;
+    outline: none;
+    border-color: rgba(34, 211, 238, 0.6);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18);
+}
+
+.form-control textarea {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(12, 15, 23, 0.9);
+    color: var(--text);
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    width: 100%;
+}
+
+.form-control textarea:focus {
+    outline: none;
+    border-color: rgba(34, 211, 238, 0.6);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18);
+}
+
+.form-control label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+}
+
+.form-card {
+    padding: 1.8rem;
 }

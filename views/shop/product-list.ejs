@@ -5,7 +5,13 @@
     <body>
         <%- include('../includes/navigation.ejs') %>
 
-            <main>
+            <main class="page">
+                <section class="section">
+                    <div class="section__head">
+                        <h2 class="section__title">All Products</h2>
+                        <p class="section__lead">Browse everything in the current rotation.</p>
+                    </div>
+                </section>
                 <% if (prods.length> 0) { %>
                     <div class="grid">
                         <% for (let product of prods) { %>

@@ -1,25 +1,30 @@
 .product-form {
-    width: 20rem;
-    max-width: 90%;
+    width: 100%;
+    max-width: 560px;
     margin: auto;
 }
 
 .product-item {
-    width: 20rem;
-    max-width: 95%;
+    width: 100%;
 }
 
 .product__title {
-    font-size: 1.2rem;
-    text-align: center;
+    font-size: 1.15rem;
+    text-align: left;
 }
 
 .product__price {
-    text-align: center;
-    color: #4d4d4d;
-    margin-bottom: 0.5rem;
+    text-align: left;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
 }
 
 .product__description {
-    text-align: center;
+    text-align: left;
+    color: var(--muted);
+}
+
+.product-details {
+    display: grid;
+    place-items: center;
 }

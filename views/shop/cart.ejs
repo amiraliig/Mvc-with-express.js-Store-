@@ -5,8 +5,13 @@
   <body>
     <%- include('../includes/navigation.ejs') %>  
 
-      <main>
-        <h1>Your Cart</h1>
+      <main class="page">
+        <section class="section">
+          <div class="section__head">
+            <h2 class="section__title">Your Cart</h2>
+            <p class="section__lead">Review your picks before checkout.</p>
+          </div>
+        </section>
 
         <% if (cartProducts.length> 0) { %>
           <div class="grid">
@@ -15,17 +20,17 @@
 
                 <header class="card__header">
                   <h1 class="product__title">
-                    <%= item.title %>
+                    <%= item.productId.title %>
                   </h1>
                 </header>
 
                 <div class="card__image">
-                  <img src="<%= item.imageUrl %>" alt="<%= item.title %>">
+                  <img src="<%= item.productId.imageUrl %>" alt="<%= item.productId.title %>">
                 </div>
 
                 <div class="card__content">
                   <h2 class="product__price">
-                    $<%= item.price %>
+                    $<%= item.productId.price %>
                   </h2>
 
                   <p>
@@ -36,13 +41,13 @@
 
                   <p>
                     Total: $
-                    <%= item.quantity * item.price %>
+                    <%= item.quantity * item.productId.price %>
                   </p>
                 </div>
 
                 <div class="card__actions">
                   <form action="/cart-delete-item" method="POST">
-                    <input type="hidden" name="productId" value="<%= item._id %>">
+                    <input type="hidden" name="productId" value="<%= item.productId._id %>">
                     <button class="btn">Remove</button>
                   </form>
                 </div>
@@ -56,7 +61,7 @@
               <h2>
                 Grand Total: $
                 <%= cartProducts.reduce((sum, p)=> {
-                  return sum + (p.quantity * p.price)
+                  return sum + (p.quantity * p.productId.price)
                   }, 0) %>
               </h2>
             </div>

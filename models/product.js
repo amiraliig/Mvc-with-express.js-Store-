@@ -17,6 +17,10 @@ const proudctSchema = new Schema({
     imageUrl: {
         type: String,
         required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        rer: 'User'
     }
 })
 

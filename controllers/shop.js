@@ -1,6 +1,5 @@
 const Product = require('../models/product')
-
-const { where } = require('sequelize')
+const Order = require('../models/order')
 exports.getProducts = (req, res, next) => {
     Product.find().then(products => {
         res.render('shop/product-list', {
@@ -44,7 +43,7 @@ exports.getChechout = (req, res, next) => {
 exports.getProductDetails = (req, res, next) => {
     const prodId = req.params.id;
     Product.findById(prodId).then((product) => {
-       
+
         res.render('shop/product-detail', {
             pageTitle: product.title,
             product: product,
@@ -70,18 +69,18 @@ exports.postCart = (req, res, next) => {
 
 };
 exports.getCart = (req, res, next) => {
+    req.user.populate("cart.items.productId")
+        .then((user) => {
+            res.render('shop/cart', {
 
-
-    req.user.getCart().then(products => {
-        res.render('shop/cart', {
-
-            pageTitle: "Your Cart",
-            path: '/cart',
-            cartProducts: products
+                pageTitle: "Your Cart",
+                path: '/cart',
+                cartProducts: user.cart.items
+            })
+            console.log(user.cart.items)
         })
-        console.log(products)
-    }).catch(err => console.log(err))
         .catch(err => console.log(err))
+
 
 
 }
@@ -97,20 +96,71 @@ exports.cartDeleteItem = (req, res, next) => {
             console.log(err)
         })
 }
-exports.createOrder = (req, res, next) => {
-    req.user.addOrder().then(() => {
-        res.redirect("/orders")
-    })
+exports.createOrder = async (req, res, next) => {
+    try {
+        const user = await req.user.populate("cart.items.productId");
 
-}
+        console.log("populated sample:", user.cart.items[0]?.productId);
+
+        const items = user.cart.items.map(item => ({
+            product: {
+                productId: item.productId._id,
+                title: item.productId.title,
+                price: item.productId.price
+            },
+            quantity: item.quantity
+        }));
+
+        console.log(items);
+
+        const newOrder = new Order({
+            user: { userId: user._id },
+            items
+        });
+
+        await newOrder.save();
+        await req.user.clearCart()
+        res.redirect("/orders");
+
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.getOrders = (req, res, next) => {
-    req.user.getOrder()
+    Order.find({
+        "user.userId": req.user._id
+    })
+        .lean()
         .then(orders => {
+            const normalizedOrders = orders.map(order => {
+                const items = (order.items || []).map(item => {
+                    const price = item.product?.price ?? item.price ?? 0;
+                    const title = item.product?.title ?? item.title ?? "";
+                    const quantity = item.quantity ?? 0;
+                    return {
+                        ...item,
+                        title,
+                        price,
+                        quantity,
+                        lineTotal: quantity * price
+                    };
+                });
+
+                const totalPrice = items.reduce((sum, item) => sum + item.lineTotal, 0);
+
+                return {
+                    ...order,
+                    items,
+                    totalPrice
+                };
+            });
+
             res.render('shop/orders', {
                 pageTitle: 'Your Orders',
                 path: '/orders',
-                orders: orders
+                orders: normalizedOrders
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => next(err));
 };
