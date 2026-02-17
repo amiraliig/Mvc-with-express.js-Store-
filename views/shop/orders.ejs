@@ -14,22 +14,19 @@
       <% orders.forEach(o => { %>
         <section class="card">
           <div class="card__content">
-            <h2>Order #<%= o.order.id %></h2>
-            <p>
-              Date:
-              <%= new Date(o.order.createdAt).toLocaleString() %>
-            </p>
+            <h2>Order #<%= o._id %></h2>
+          
 
-            <% if (!o.products || o.products.length === 0) { %>
+            <% if (!o.items || o.items.length === 0) { %>
               <p>No products in this order.</p>
             <% } else { %>
               <ul>
-                <% o.products.forEach(p => { %>
+                <% o.items.forEach(p => { %>
                   <li>
                     <strong><%= p.title %></strong>
-                    — Qty: <%= p.orderItem.quantity %>
+                    — Qty: <%= p.quantity %>
                     — Price: $<%= p.price %>
-                    — Line total: $<%= p.orderItem.quantity * p.price %>
+                    — Line total: $<%= p.quantity * p.price %>
                   </li>
                 <% }) %>
               </ul>
@@ -37,7 +34,7 @@
               <p>
                 <strong>
                   Order total: $
-                  <%= o.products.reduce((sum, p) => sum + (p.orderItem.quantity * p.price), 0) %>
+                  <%= o.items.reduce((sum, p) => sum + (p.quantity * p.price), 0) %>
                 </strong>
               </p>
             <% } %>

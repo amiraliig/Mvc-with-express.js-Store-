@@ -39,6 +39,12 @@ class Product {
         const db = getDb();
         return db.collection('products')
             .deleteOne({ _id: new ObjectId(productId) })
+            .then(() => {
+                db.collection("orders").updateMany(
+                    { "items.productId": productId },
+                    { $pull: { items: { productId: productId } } }
+                )
+            })
     }
     static updateById(productId, product) {
         const db = getDb();
