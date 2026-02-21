@@ -1,4 +1,4 @@
-# Node.js MVC Shop (MongoDB + Mongoose)
+  # Node.js MVC Shop (MongoDB + Mongoose)
 
 A simple shop project using the MVC architecture with Node.js, Express, Mongoose, and EJS.
 
