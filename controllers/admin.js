@@ -6,7 +6,8 @@ const product = require('../models/product')
 exports.getAddProducts = (req, res, next) => {
     res.render('admin/add-product', {
         pageTitle: 'Add Product',
-        path: '/admin/add-product'
+        path: '/admin/add-product',
+        isLoggedIn: req.session.userId
     })
 }
 exports.postAddProducts = (req, res, next) => {
@@ -38,6 +39,8 @@ exports.getProducts = (req, res, next) => {
                 hasProducts: products.length > 0,
                 activeShop: true,
                 productsCss: true,
+                isLoggedIn: req.session.userId
+
             })
         })
         .catch(err =>
@@ -55,7 +58,8 @@ exports.getEditProduct = (req, res, next) => {
                 pageTitle: product.title,
                 product: product,
                 editing: editMode,
-                path: "/admin"
+                path: "/admin",
+                isLoggedIn: req.session.userId
             })
         })
         .catch(err => {

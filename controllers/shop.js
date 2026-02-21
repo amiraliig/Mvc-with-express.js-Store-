@@ -5,7 +5,8 @@ exports.getProducts = (req, res, next) => {
         res.render('shop/product-list', {
             prods: products,
             pageTitle: "All Products",
-            path: '/products'
+            path: '/products',
+            isLoggedIn: req.session.userId
         })
     }).catch(err => {
         console.log(err)
@@ -19,7 +20,8 @@ exports.getIndex = (req, res, next) => {
         res.render('shop/index', {
             prods: products,
             pageTitle: "All Products",
-            path: '/'
+            path: '/',
+            isLoggedIn: req.session.userId
         })
     }).catch(err => {
         console.log(err)
@@ -30,14 +32,16 @@ exports.getIndex = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
     res.render('shop/cart', {
         path: '/cart',
-        pageTitle: 'Your Cart'
+        pageTitle: 'Your Cart',
+        isLoggedIn: req.session.userId
     })
 }
 
 exports.getChechout = (req, res, next) => {
     res.render('shop/checkout', {
         path: '/checkout',
-        pageTitle: 'Checkout'
+        pageTitle: 'Checkout',
+        isLoggedIn: req.session.userId
     })
 }
 exports.getProductDetails = (req, res, next) => {
@@ -47,7 +51,8 @@ exports.getProductDetails = (req, res, next) => {
         res.render('shop/product-detail', {
             pageTitle: product.title,
             product: product,
-            path: '/products'
+            path: '/products',
+            isLoggedIn: req.session.userId
         });
     }).catch(err => {
         return res.status(404).render('404', {
@@ -75,7 +80,8 @@ exports.getCart = (req, res, next) => {
 
                 pageTitle: "Your Cart",
                 path: '/cart',
-                cartProducts: user.cart.items
+                cartProducts: user.cart.items,
+                isLoggedIn: req.session.userId
             })
             console.log(user.cart.items)
         })
@@ -159,7 +165,8 @@ exports.getOrders = (req, res, next) => {
             res.render('shop/orders', {
                 pageTitle: 'Your Orders',
                 path: '/orders',
-                orders: normalizedOrders
+                orders: normalizedOrders,
+                isLoggedIn: req.session.userId
             });
         })
         .catch(err => next(err));

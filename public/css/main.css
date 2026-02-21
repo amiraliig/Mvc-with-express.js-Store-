@@ -121,6 +121,14 @@ main {
   background: rgba(34, 211, 238, 0.12);
 }
 
+.main-header__item--logout form {
+  margin: 0;
+}
+
+.main-header__item--logout .btn {
+  padding: 0.45rem 0.8rem;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

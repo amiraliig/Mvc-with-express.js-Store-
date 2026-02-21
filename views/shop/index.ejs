@@ -6,118 +6,124 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main class="page page--home">
-                <% const featured = prods && prods.length ? prods[0] : null; %>
-                <section class="hero">
-                    <div class="hero__grid">
-                        <div class="hero__content">
-                            <p class="hero__kicker">Limited Night Drops</p>
-                            <h1 class="hero__title">Dark commerce, tuned to feel premium.</h1>
-                            <p class="hero__lead">
-                                Curated essentials, sharp cuts, and materials that look expensive in low light.
-                                Build your next fit with confidence.
-                            </p>
-                            <div class="hero__cta">
-                                <a class="btn" href="/products">Explore Drops</a>
-                                <a class="btn btn--ghost" href="/cart">View Cart</a>
+                <% const featured=prods && prods.length ? prods[0] : null; %>
+                    <section class="hero">
+                        <div class="hero__grid">
+                            <div class="hero__content">
+                                <p class="hero__kicker">Limited Night Drops</p>
+                                <h1 class="hero__title">Dark commerce, tuned to feel premium.</h1>
+                                <p class="hero__lead">
+                                    Curated essentials, sharp cuts, and materials that look expensive in low light.
+                                    Build your next fit with confidence.
+                                </p>
+                                <div class="hero__cta">
+                                    <a class="btn" href="/products">Explore Drops</a>
+                                    <a class="btn btn--ghost" href="/cart">View Cart</a>
+                                </div>
+                                <div class="hero__stats">
+                                    <div class="hero__stat">
+                                        <span class="hero__stat-number">
+                                            <%= prods.length %>+
+                                        </span>
+                                        <span class="hero__stat-label">Items Live</span>
+                                    </div>
+                                    <div class="hero__stat">
+                                        <span class="hero__stat-number">48h</span>
+                                        <span class="hero__stat-label">New Rotations</span>
+                                    </div>
+                                    <div class="hero__stat">
+                                        <span class="hero__stat-number">24/7</span>
+                                        <span class="hero__stat-label">Support</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="hero__stats">
-                                <div class="hero__stat">
-                                    <span class="hero__stat-number"><%= prods.length %>+</span>
-                                    <span class="hero__stat-label">Items Live</span>
+                            <div class="hero__visual">
+                                <div class="hero__card">
+                                    <p class="hero__card-title">Featured Drop</p>
+                                    <p class="hero__card-value">
+                                        <%= featured ? featured.title : 'Shadow Pack' %>
+                                    </p>
                                 </div>
-                                <div class="hero__stat">
-                                    <span class="hero__stat-number">48h</span>
-                                    <span class="hero__stat-label">New Rotations</span>
+                                <div class="hero__card">
+                                    <p class="hero__card-title">Starting At</p>
+                                    <p class="hero__card-value">$<%= featured ? featured.price : '99' %>
+                                    </p>
                                 </div>
-                                <div class="hero__stat">
-                                    <span class="hero__stat-number">24/7</span>
-                                    <span class="hero__stat-label">Support</span>
+                                <div class="hero__card">
+                                    <p class="hero__card-title">Tone</p>
+                                    <p class="hero__card-value">Matte. Minimal. Magnetic.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="hero__visual">
-                            <div class="hero__card">
-                                <p class="hero__card-title">Featured Drop</p>
-                                <p class="hero__card-value"><%= featured ? featured.title : 'Shadow Pack' %></p>
-                            </div>
-                            <div class="hero__card">
-                                <p class="hero__card-title">Starting At</p>
-                                <p class="hero__card-value">$<%= featured ? featured.price : '99' %></p>
-                            </div>
-                            <div class="hero__card">
-                                <p class="hero__card-title">Tone</p>
-                                <p class="hero__card-value">Matte. Minimal. Magnetic.</p>
-                            </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="section__head">
+                            <span class="badge">Why It Hits Different</span>
+                            <h2 class="section__title">A dark UI with bright intent.</h2>
+                            <p class="section__lead">
+                                Clean product framing, high contrast typography, and a UI that feels
+                                like a premium storefront at midnight.
+                            </p>
                         </div>
-                    </div>
-                </section>
-
-                <section class="section">
-                    <div class="section__head">
-                        <span class="badge">Why It Hits Different</span>
-                        <h2 class="section__title">A dark UI with bright intent.</h2>
-                        <p class="section__lead">
-                            Clean product framing, high contrast typography, and a UI that feels
-                            like a premium storefront at midnight.
-                        </p>
-                    </div>
-                    <div class="grid">
-                        <article class="card feature-card">
-                            <h3 class="feature-card__title">Curated in-house</h3>
-                            <p class="feature-card__text">
-                                Only products that match the silhouette and material standards make the cut.
-                            </p>
-                        </article>
-                        <article class="card feature-card">
-                            <h3 class="feature-card__title">Fast checkout</h3>
-                            <p class="feature-card__text">
-                                Fewer clicks, smoother flow, and zero visual noise.
-                            </p>
-                        </article>
-                        <article class="card feature-card">
-                            <h3 class="feature-card__title">Confident pricing</h3>
-                            <p class="feature-card__text">
-                                Transparent totals and clear pricing, always in sight.
-                            </p>
-                        </article>
-                    </div>
-                </section>
-
-                <section class="section">
-                    <div class="section__head">
-                        <h2 class="section__title">Featured Drops</h2>
-                        <p class="section__lead">High intent picks, updated in small batches.</p>
-                    </div>
-                    <% if (prods.length > 0) { %>
                         <div class="grid">
-                            <% for (let product of prods) { %>
-                                <article class="card product-item">
-                                    <header class="card__header">
-                                        <h1 class="product__title">
-                                            <%= product.title %>
-                                        </h1>
-                                    </header>
-                                    <div class="card__image">
-                                        <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
-                                    </div>
-                                    <div class="card__content">
-                                        <h2 class="product__price">$<%= product.price %>
-                                        </h2>
-                                        <p class="product__description">
-                                            <%= product.description %>
-                                        </p>
-                                    </div>
-                                    <div class="card__actions">
-
-                                        <%- include('../includes/add-card.ejs',{product:product})%> <a
-                                                href="/products/<%= product._id %>">Details</a>
-                                    </div>
-                                </article>
-                                <% } %>
+                            <article class="card feature-card">
+                                <h3 class="feature-card__title">Curated in-house</h3>
+                                <p class="feature-card__text">
+                                    Only products that match the silhouette and material standards make the cut.
+                                </p>
+                            </article>
+                            <article class="card feature-card">
+                                <h3 class="feature-card__title">Fast checkout</h3>
+                                <p class="feature-card__text">
+                                    Fewer clicks, smoother flow, and zero visual noise.
+                                </p>
+                            </article>
+                            <article class="card feature-card">
+                                <h3 class="feature-card__title">Confident pricing</h3>
+                                <p class="feature-card__text">
+                                    Transparent totals and clear pricing, always in sight.
+                                </p>
+                            </article>
                         </div>
-                        <% } else { %>
-                            <h1>No Products Found!</h1>
-                            <% } %>
-                </section>
+                    </section>
+
+                    <section class="section">
+                        <div class="section__head">
+                            <h2 class="section__title">Featured Drops</h2>
+                            <p class="section__lead">High intent picks, updated in small batches.</p>
+                        </div>
+                        <% if (prods.length> 0) { %>
+                            <div class="grid">
+                                <% for (let product of prods) { %>
+                                    <article class="card product-item">
+                                        <header class="card__header">
+                                            <h1 class="product__title">
+                                                <%= product.title %>
+                                            </h1>
+                                        </header>
+                                        <div class="card__image">
+                                            <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                                        </div>
+                                        <div class="card__content">
+                                            <h2 class="product__price">$<%= product.price %>
+                                            </h2>
+                                            <p class="product__description">
+                                                <%= product.description %>
+                                            </p>
+                                        </div>
+                                        <div class="card__actions">
+                                           
+                                                <%- include('../includes/add-card.ejs',{product:product})%>
+                                                   
+                                                        <a href="/products/<%= product._id %>">Details</a>
+                                        </div>
+                                    </article>
+                                    <% } %>
+                            </div>
+                            <% } else { %>
+                                <h1>No Products Found!</h1>
+                                <% } %>
+                    </section>
             </main>
             <%- include('../includes/end.ejs') %>
