@@ -18,7 +18,12 @@
                         href="/admin/products">Admin Products</a></li>
                 <% } %>
 
-                    <li class="main-header__item"><a class="btn btn--ghost" href="/login">Login</a></li>
+                    <% if (!isLoggedIn) { %>
+                        <li class="main-header__item"><a class="btn btn--ghost <%= path === '/signup' ? 'active' : '' %>"
+                                href="/signup">Signup</a></li>
+                        <li class="main-header__item"><a class="btn btn--ghost <%= path === '/login' ? 'active' : '' %>"
+                                href="/login">Login</a></li>
+                    <% } %>
                     <% if (isLoggedIn) { %>
                         <li class="main-header__item main-header__item--logout">
                             <form action="/logout" method="post">

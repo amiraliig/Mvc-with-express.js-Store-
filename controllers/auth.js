@@ -1,5 +1,14 @@
 const bcrypt = require("bcrypt")
 const User = require("../models/user")
+
+exports.getSignup = (req, res, next) => {
+    res.render("auth/signup", {
+        path: "/signup",
+        pageTitle: "Signup page",
+        isLoggedIn: req.session?.userId
+    })
+}
+
 exports.getLogin = (req, res, next) => {
     console.log(req.session.isLoggedIn)
     res.render("auth/login", {
@@ -9,6 +18,32 @@ exports.getLogin = (req, res, next) => {
 
     })
 }
+
+exports.postSignup = async (req, res, next) => {
+    const { name, email, password } = req.body
+    User.findOne({
+        email: email
+    }).then(user => {
+        if (user) {
+            return res.redirect("/signup")
+        }
+        bcrypt.hash(password, 12).then((hash) => {
+            const newUser = new User({
+                name: name,
+                email: email,
+                password: hash
+            })
+            newUser.save().then(user => {
+                req.session.userId = user._id.toString()
+            }).then(() => {
+                res.redirect("/")
+            })
+        })
+    })
+
+
+}
+
 exports.postLogin = async (req, res, next) => {
 
     const { email, password } = req.body
