@@ -1,97 +1,115 @@
-  # Node.js MVC Shop (MongoDB + Mongoose)
+# MVC Shop (Node.js + Express + Mongoose)
 
-A simple shop project using the MVC architecture with Node.js, Express, Mongoose, and EJS.
+Educational e-commerce project built with MVC architecture.
+It includes authentication, product CRUD for admins, cart, and order flow with server-rendered EJS pages.
 
----
+## Stack
+- Node.js (CommonJS)
+- Express 5
+- MongoDB + Mongoose
+- EJS templates
+- `express-session` + `connect-mongodb-session`
+- `csurf` + `connect-flash`
+- `bcrypt`
+- `resend` (password reset emails)
 
 ## Features
-- MVC architecture (Model, View, Controller)
-- Product management (add, edit, delete, view)
-- Product detail page
-- Shopping cart (if implemented)
-- Page rendering with EJS and partials
-- Uses MongoDB and Mongoose for data management
-- Session management with express-session
-
----
+- MVC structure (`models`, `views`, `controllers`, `routes`)
+- Signup / login / logout
+- Password reset with token
+- Product list + product details
+- Cart add/remove
+- Order creation from cart
+- Admin-only product management (add/edit/delete)
 
 ## Prerequisites
-- Node.js (version 14 or higher)
-- MongoDB (running on localhost or any server)
+- Node.js 18+ recommended
+- MongoDB running locally on `localhost:27017`
 - npm
 
----
+## Quick Start
+1. Install dependencies:
+```bash
+npm install
+```
 
-## Installation & Setup
+2. Ensure MongoDB user expected by current code exists:
+```javascript
+// run in mongosh
+use admin
+db.createUser({
+  user: "admin",
+  pwd: "admin123",
+  roles: [{ role: "root", db: "admin" }]
+})
+```
+If this user already exists, skip this step.
 
-1. Clone the repository:
-    ```bash
-    git clone <repo-url>
-    cd mvc
-    ```
-2. Install dependencies:
-    ```bash
-    npm install
-    ```
-3. Start MongoDB (default port 27017):
-    ```bash
-    mongod
-    ```
-4. Database connection info in app.js is as follows:
-    ```js
-    mongoose.connect('mongodb://localhost:27017/shop')
-    ```
-    Change the connection string if needed.
-5. Start the server:
-    ```bash
-    npm start
-    ```
-    or
-    ```bash
-    node app.js
-    ```
-6. The project will be available at [http://localhost:3000](http://localhost:3000).
+3. Start the app:
+```bash
+npm start
+```
 
----
+4. Open:
+`http://localhost:3000`
 
-## Folder Structure
+## Seed Behavior
+- On first run (when `users` collection is empty), app creates one user:
+  - email: `test@gmail.com`
+  - password: `123`
+  - role: `user`
 
+To enable admin pages, promote this user manually:
+```javascript
+// run in mongosh
+use test
+db.users.updateOne(
+  { email: "test@gmail.com" },
+  { $set: { role: "admin" } }
+)
+```
+
+## Main Routes
+- `GET /`, `GET /products`, `GET /products/:id`
+- `GET /cart`, `POST /cart`, `POST /cart-delete-item`, `POST /create-order`
+- `GET /orders`
+- `GET /signup`, `POST /signup`
+- `GET /login`, `POST /login`, `POST /logout`
+- `GET /reset-password`, `POST /reset`
+- `GET /new-password/:token`, `POST /set-new-password`
+- `GET /admin/add-product`, `POST /admin/add-product`
+- `GET /admin/products`
+- `GET /admin/editProduct/:productId`, `POST /admin/editProduct/:productId`
+- `POST /admin/deleteProduct/:productId`
+
+## Project Structure
 ```
 mvc/
 ├── app.js
 ├── controllers/
-│   ├── admin.js
-│   ├── shop.js
-│   └── error.js
+├── middleware/
 ├── models/
-│   └── product.js
 ├── routes/
-│   ├── admin.js
-│   └── shop.js
 ├── views/
 │   ├── admin/
+│   ├── auth/
 │   ├── shop/
 │   └── includes/
 ├── public/
 │   └── css/
 ├── utils/
-│   └── database.js
-├── package.json
+├── data/
 └── README.md
 ```
 
----
+## Scripts
+- `npm start` -> runs `nodemon --ignore data/ app.js`
+- `npm test` -> placeholder (no real tests yet)
 
-## Notes
-- The Product model and other models are defined using Mongoose.
-- If you want to use Sharding or Replica Set, just change the connection string to point to mongos.
-- For further development (such as authentication, order management, etc.), you can add new controllers and models.
-
----
-
-## Contribution
-Suggestions and Pull Requests are welcome!
+## Current Limitations
+- Secrets are hardcoded in source (`Mongo URI`, session secret, Resend API key).
+- No automated tests yet.
+- Some dependencies are unused in current code (`sequelize`, `mysql2`, `node-mailjet`).
 
 ## License
-MIT
-
+ISC
