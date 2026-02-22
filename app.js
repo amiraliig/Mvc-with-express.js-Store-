@@ -5,11 +5,14 @@ const session = require("express-session")
 const MongoDbStore = require("connect-mongodb-session")(session)
 const bcrypt = require("bcrypt")
 const app = express()
+const csrf = require("csurf")
+const flash = require("connect-flash")
 const store = new MongoDbStore({
     uri: "mongodb://admin:admin123@localhost:27017/?authSource=admin",
     collection: 'session',
 
 })
+const csrfProtection = csrf({})
 const User = require("./models/user")
 const mongoose = require("mongoose")
 
@@ -25,6 +28,8 @@ app.use(session({
     saveUninitialized: false,
     store: store
 }))
+app.use(csrfProtection)
+app.use(flash())
 app.use((req, res, next) => {
     if (!req.session?.userId) {
         return next();
@@ -40,6 +45,11 @@ app.use((req, res, next) => {
             next();
         });
 });
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken()
+    res.locals.isAdmin = req.user?.role === 'admin';
+    next()
+})
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');

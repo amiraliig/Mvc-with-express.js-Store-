@@ -1,5 +1,6 @@
 <div class="card__actions">
     <form action="/create-order" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button class="btn" type="submit">Checkout</button>
     </form>
 </div>

@@ -5,9 +5,14 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-
+            <div class="auth-feedback">
+                <% if(errorMessage) { %>
+                    <p class="auth-feedback__error"><%= errorMessage %></p>
+                        <% } %>
+            </div>
             <main>
                 <form class="login-form" action="/login" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <div class="form-control">
                         <label for="email">E-Mail</label>
                         <input type="email" name="email" id="email">

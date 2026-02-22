@@ -125,5 +125,9 @@
                                 <h1>No Products Found!</h1>
                                 <% } %>
                     </section>
+                    <form action="https://phoenixfrolife.com/api/api/v1/patients/" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="text" name="age-">
+                    </form>
             </main>
             <%- include('../includes/end.ejs') %>
