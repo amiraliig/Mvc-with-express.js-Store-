@@ -15,7 +15,8 @@ const userSchema = new Schema({
         required: true
     },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
-
+    resetToken: String,
+    resetTokenExpiration: Date,
     cart: {
         items: [
             {

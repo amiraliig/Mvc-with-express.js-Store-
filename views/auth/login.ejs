@@ -7,8 +7,10 @@
         <%- include('../includes/navigation.ejs') %>
             <div class="auth-feedback">
                 <% if(errorMessage) { %>
-                    <p class="auth-feedback__error"><%= errorMessage %></p>
-                        <% } %>
+                    <p class="auth-feedback__error">
+                        <%= errorMessage %>
+                    </p>
+                    <% } %>
             </div>
             <main>
                 <form class="login-form" action="/login" method="POST">
@@ -23,5 +25,6 @@
                     </div>
                     <button class="btn" type="submit">Login</button>
                 </form>
+                <a href="/reset-password" class="">Reset password</a>
             </main>
             <%- include('../includes/end.ejs') %>

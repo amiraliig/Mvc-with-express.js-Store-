@@ -29,10 +29,10 @@
                                         href="/login">Login</a></li>
                                 <% } %>
                                     <% if (isLoggedIn) { %>
-                                        <li class="main-header__item main-header__item--logout">
+                                        <li class="main-header__item ">
                                             <form action="/logout" method="post">
                                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                <button class="btn btn--ghost" type="submit">Logout</button>
+                                                <button class=" btn--ghost" type="submit">Logout</button>
                                             </form>
                                         </li>
                                         <% } %>
